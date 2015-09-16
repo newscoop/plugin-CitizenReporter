@@ -1,0 +1,4 @@
+newscoop_citizen_reporter_plugin:
+    resource: "@NewscoopCitizenReporterPluginBundle/Controller"
+    type:     annotation
+    prefix:   /
