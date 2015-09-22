@@ -1,0 +1,65 @@
+
+
+.reports{
+  padding-top:30px;
+  ul{
+    margin:0;
+    padding:0;
+    list-style: none;
+    li{
+      display:block;
+
+      padding: 1em 0;
+      border-bottom:1px solid #ddd;
+
+
+      .image{
+        position:relative;
+        margin-bottom:1em;
+        @media @md{
+          margin:0;
+          float:left;
+          max-width:200px;
+        }
+
+        .status{
+          display:inline-block;
+          position:absolute;
+          top: 50%;
+          left: 50%;
+          margin-left: -1.6em;
+          margin-top: -1.4em;
+          padding:0.9em 1em;
+          font-size:1.2em;
+          border-radius:50%;
+          background: rgba(255,255,255, 0.8);
+
+          &.accepted{
+            color: @base_color;
+          }
+
+          &.rejected{
+            color:red;
+          }
+
+          &.pending{
+            color:@darker_base;
+          }
+        }
+
+      }
+
+      p{
+        margin:0;
+        line-height: 1.1em;
+
+        @media @md{
+          margin-left:220px;
+        }
+      }
+
+
+
+    }
+  }
+}
