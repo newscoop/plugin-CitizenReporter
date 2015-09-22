@@ -10,7 +10,7 @@ namespace Newscoop\CitizenReporterPluginBundle\EventListener;
 use Newscoop\NewscoopBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class ConfigurationMenuListener
+class ConfigureMenuListener
 {
     protected $translator;
 
