@@ -6013,7 +6013,9 @@ angular.module('app.controllers', [])
 .controller('LoginCtrl', function($scope, $rootScope, $location, $timeout, User) {
     $timeout(function(){
             $rootScope.animationDirection = '';
-        }, 5000);
+        }, 400);
+
+    $rootScope.currentPath = $location.path();
     $scope.user = {};
 
 
@@ -6051,14 +6053,16 @@ angular.module('app.controllers', [])
 
 })
 .controller('AddCtrl', function($scope, $rootScope, $location, $timeout, User, FileReader) {
-    $scope.userLoggedIn = User.isLoggedIn();
+    $rootScope.userLoggedIn = User.isLoggedIn();
     $scope.imageSrc = "";
+
+    $rootScope.currentPath = $location.path();
     $timeout(function(){
         $rootScope.animationDirection = '';
-    }, 5000);
+    }, 400);
 
 
-    if (!$scope.userLoggedIn && global.requireLogin)
+    if (!$rootScope.userLoggedIn && global.requireLogin)
         $location.path( "/login" );
 
     $scope.removePhoto = function(){
@@ -6067,13 +6071,22 @@ angular.module('app.controllers', [])
 
 })
 .controller('ReportsCtrl', function($scope, $rootScope, $location, $timeout, User) {
-    $scope.userLoggedIn = User.isLoggedIn();
+    $rootScope.userLoggedIn = User.isLoggedIn();
+    $rootScope.currentPath = $location.path();
+    $scope.sortType={status:''};
+
     $timeout(function(){
             $rootScope.animationDirection = 'ltr';
-        }, 5000);
+        }, 400);
 
-    if (!$scope.userLoggedIn)
+    if (!$rootScope.userLoggedIn)
         $location.path( "/login" );
+
+    $scope.reports = [
+        {id: 1, status:'accepted', date_sent: '07.10.2015', date_review: '17.10.2015', message: 'lorem lipsum tralalalala lorem lipsum tralalalala lorem lipsum tralalalala lorem  lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala lipsum tralalalala lorem lipsum tralalalala ', img: 'http://lorempixel.com/800/800/'},
+        {id: 2, status:'rejected',date_sent: '07.10.2015', date_review: '17.10.2015', message: 'lorem lipsum tralalalala lorem lipsum tralalalala lorem lipsum tralalalala', img: 'http://lorempixel.com/800/800/'},
+        {id: 3, status:'pending',date_sent: '07.10.2015', message: 'lorem lipsum tralalalala lorem lipsum tralalalala', img: 'http://lorempixel.com/800/800/'},
+    ];
 
 
 

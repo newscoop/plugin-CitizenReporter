@@ -600,18 +600,17 @@ table {
   width: 100%;
   min-height: 100vh;
   overflow: auto;
+  padding-top: 44px;
 }
 .view-animate {
   -webkit-backface-visibility: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
   overflow: auto;
-  min-height: 100vh;
+  left: 0;
 }
 .view-animate.ng-enter,
 .view-animate.ng-leave {
-  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.3s;
-  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.3s;
+  -webkit-transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
+  transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
   position: absolute;
   width: 100%;
 }
@@ -639,7 +638,15 @@ table {
   transform: translate3d(-100%, 0, 0);
   -webkit-transform: translate3d(-100%, 0, 0);
 }
-.ltr .view-animate.ng-leave-active {
+.ltr .view-animate.ng-enter.ng-enter-active {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+.ltr .view-animate.ng-leave {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+.ltr .view-animate.ng-leave.ng-leave-active {
   transform: translate3d(100%, 0, 0);
   -webkit-transform: translate3d(100%, 0, 0);
 }
@@ -772,26 +779,49 @@ button:active {
   border-color: rgba(0, 107, 161, 0.8);
 }
 .mainHeader {
-  z-index: 3;
+  z-index: 2222;
   width: 100%;
   height: 44px;
   line-height: 44px;
+  box-shadow: 0px 5px 5px 0px #dddddd;
   padding: 0;
-  color: #0089cf;
+  background: #0089cf;
+  color: #fff;
   font-size: 20px;
   text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.mainHeader .title {
+  position: absolute;
+  top: 0;
+  right: 60px;
+  left: 60px;
+  z-index: 0;
+  overflow: hidden;
+  margin: 0 10px;
+  min-width: 30px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 44px;
 }
 .mainHeader .button {
   display: block;
   padding: 0 1em;
   font-size: 1.2em;
   float: right;
+  color: inherit;
 }
 .mainHeader .button-left {
   float: left;
 }
 .login {
-  margin: 2% auto 0 auto;
+  margin: 4em auto 0 auto;
   width: 100%;
   max-width: 400px;
 }
@@ -914,6 +944,23 @@ button:active {
 .reports {
   padding-top: 30px;
 }
+.reports .filters {
+  padding: 15px 0;
+}
+.reports .filters .filter {
+  display: inline-block;
+  color: #006ba1;
+  border: 1px solid #006ba1;
+  border-radius: 3px;
+  padding: 6px 15px;
+  cursor: pointer;
+  font-weight: 300;
+}
+.reports .filters .filter.active {
+  background: #0089cf;
+  border-color: #0089cf;
+  color: #fff;
+}
 .reports ul {
   margin: 0;
   padding: 0;
@@ -935,33 +982,29 @@ button:active {
     max-width: 200px;
   }
 }
-.reports ul li .image .status {
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-left: -1.6em;
-  margin-top: -1.4em;
-  padding: 0.9em 1em;
-  font-size: 1.2em;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.8);
-}
-.reports ul li .image .status.accepted {
-  color: #0089cf;
-}
-.reports ul li .image .status.rejected {
-  color: red;
-}
-.reports ul li .image .status.pending {
-  color: #006ba1;
-}
-.reports ul li p {
+.reports ul li .content {
   margin: 0;
   line-height: 1.1em;
 }
 @media only screen and (min-width: 992px) {
-  .reports ul li p {
+  .reports ul li .content {
     margin-left: 220px;
   }
+}
+.reports ul li .content .status {
+  display: block;
+  padding-bottom: 0.9em;
+  font-size: .9em;
+}
+.reports ul li .content .status span {
+  margin-right: 1em;
+}
+.reports ul li .content .status i.accepted {
+  color: #0089cf;
+}
+.reports ul li .content .status i.rejected {
+  color: red;
+}
+.reports ul li .content .status i.pending {
+  color: #006ba1;
 }
