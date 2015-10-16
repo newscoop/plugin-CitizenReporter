@@ -2,7 +2,7 @@
     "name": "newscoop/citizenreporter-plugin-bundle",
     "description": "CitizenReporter plugin for Newscoop",
     "keywords": ["newscoop", "citizen", "reporter", "plugin", "reporting", "online"],
-    "version": "0.0.1",
+    "version": "0.0.2",
     "type": "newscoop-plugin",
     "license": "GPL-3.0",
     "authors": [
@@ -16,7 +16,8 @@
         "newscoop/plugins-installer": ">=v0.2"
     },
     "autoload": {
-        "psr-4": { "Newscoop\\CitizenReporterPluginBundle\\": "" }
+        "psr-0": { "Newscoop\\CitizenReporterPluginBundle": "" }
     },
+    "target-dir": "Newscoop/CitizenReporterPluginBundle",
     "minimum-stability": "dev"
 }
