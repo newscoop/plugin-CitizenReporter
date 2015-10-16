@@ -16,7 +16,8 @@
         "newscoop/plugins-installer": ">=v0.2"
     },
     "autoload": {
-        "psr-4": { "Newscoop\\CitizenReporterPluginBundle\\": "" }
+        "psr-0": { "Newscoop\\CitizenReporterPluginBundle": "" }
     },
+    "target-dir": "Newscoop/CitizenReporterPluginBundle",
     "minimum-stability": "dev"
 }
