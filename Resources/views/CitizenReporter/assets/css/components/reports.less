@@ -2,13 +2,33 @@
 
 .reports{
   padding-top:30px;
+
+
+  .filters{
+    padding: 15px 0;
+    .filter{
+      display: inline-block;
+      color: @darker_base;
+      border: 1px solid @darker_base;
+      border-radius: 3px;
+      padding: 6px 15px;
+      cursor: pointer;
+      font-weight: 300;
+
+      &.active{
+        background: @base_color;
+        border-color: @base_color;
+        color: #fff;
+      }
+    }
+  }
+
   ul{
     margin:0;
     padding:0;
     list-style: none;
     li{
       display:block;
-
       padding: 1em 0;
       border-bottom:1px solid #ddd;
 
@@ -22,39 +42,41 @@
           max-width:200px;
         }
 
-        .status{
-          display:inline-block;
-          position:absolute;
-          top: 50%;
-          left: 50%;
-          margin-left: -1.6em;
-          margin-top: -1.4em;
-          padding:0.9em 1em;
-          font-size:1.2em;
-          border-radius:50%;
-          background: rgba(255,255,255, 0.8);
 
-          &.accepted{
-            color: @base_color;
-          }
-
-          &.rejected{
-            color:red;
-          }
-
-          &.pending{
-            color:@darker_base;
-          }
-        }
 
       }
 
-      p{
+      .content{
         margin:0;
         line-height: 1.1em;
 
         @media @md{
           margin-left:220px;
+        }
+
+        .status{
+          display:block;
+          padding-bottom:0.9em;
+          font-size:.9em;
+
+          span{
+            margin-right:1em;
+          }
+
+
+          i{
+            &.accepted{
+              color: @base_color;
+            }
+
+            &.rejected{
+              color:red;
+            }
+
+            &.pending{
+              color:@darker_base;
+            }
+          }
         }
       }
 
@@ -63,3 +85,8 @@
     }
   }
 }
+
+
+
+
+
