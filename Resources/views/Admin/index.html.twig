@@ -6,6 +6,7 @@
 
 {% block admin_stylesheets %}
 <link rel="stylesheet" href="{{ asset('/bundles/newscoopnewscoop/css/jquery.dynatable.css') }}">
+<link href="{{ asset('/bundles/newscoopcitizenreporterplugin/css/backend.css')  }}" rel="stylesheet">
 {% endblock %}
 
 {% block admin_scripts %}
@@ -15,9 +16,309 @@
 
 {% block admin_content %}
 
+<div class="row">
+  <div class="col-md-5">
 
-<div class="plugin-container">
-  <p>Hi, {{ name }}</p>
+    <ul class="nav nav-pills">
+      <li role="presentation" class="active"><a href="#all" class="active dynatable-filter filter-all" data-filter="all">All</a></li>
+      <li role="presentation"><a href="#pending" class="active dynatable-filter filter-pending" data-filter="pending">Pending</a></li>
+      <li role="presentation"><a href="#accepted" class="active dynatable-filter filter-accepted" data-filter="accepted">Accepted</a></li>
+      <li role="presentation"><a href="#rejected" class="active dynatable-filter filter-rejected" data-filter="rejected">Rejected</a></li>
+
+
+
+    </ul>
+  </div>
+
+    <div class="input-group col-md-5">
+      <input type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+    </div>
+
+    <div class="col-md-2">
+      <a href="#config" class="btn btn-default pull-right"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+    </div>
+
+
 </div>
+<div class="row plugin-placeholder">
+  <div class="col-md-12">
+    <table id="reports-table" class="table table-bordered table-hover table-striped" style="word-wrap: break-word;table-layout: fixed;">
+      <thead>
+        <tr>
+          <th data-dynatable-column="image" style="width: 216px;" >Photo</th>
+          <th data-dynatable-column="message">Message</th>
+          <th data-dynatable-column="created_at" style="width: 116px;">Sent at</th>
+          <th data-dynatable-column="userId" style="width: 116px;">User</th>
+          <th data-dynatable-column="status" style="width: 50px;">Status</th>
+          <th style="width: 116px;">Actions</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><img src="http://lorempixel.com/200/200/" /></td>
+          <td>Lorem ipsum dolor sit amet enim. Etiam ullamcorper. Suspendisse a pellentesque dui, non felis. Maecenas malesuada elit lectus felis, malesuada ultricies. Curabitur et ligula. Ut molestie a, ultricies porta urna. Vestibulum commodo volutpat a, convallis ac, laoreet enim. Phasellus fermentum in, dolor. Pellentesque facilisis. Nulla imperdiet sit amet magna. Vestibulum dapibus, mauris nec malesuada fames ac turpis velit, rhoncus eu, luctus et interdum adipiscing wisi. Aliquam </td>
+          <td>17.04.2015 14:37</td>
+          <td>John Doe</td>
+          <td>
+            <span class="glyphicon glyphicon-ok accepted" aria-hidden="true"></span>
+
+            <span class="glyphicon glyphicon-remove rejected" aria-hidden="true"></span>
+
+            <!-- pending bez ikonki -->
+
+          </td>
+          <td class="actions">
+              <button type="button" class="btn btn-sm btn-success">Accept</button>
+              <button type="button" class="btn btn-sm btn-danger">Reject</button>
+
+
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <div class="cleafix"></div>
+</div>
+</div>
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{# {{ 'ads.label.sure'|trans }} #}</h4>
+      </div>
+      <div class="modal-body" style="font-size: 14px;">
+        {# {{ 'ads.label.suremsg'|trans }} #}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{# {{ 'ads.btn.cancel'|trans }} #}</button>
+        <button type="button" class="btn btn-danger" id="delete-confirm" data-dismiss="modal">{# {{ 'ads.btn.delete'|trans }} #}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="descriptionModal" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{# {{ 'ads.label.description'|trans }} #}</h4>
+      </div>
+      <div class="modal-body classified-description" style="font-size: 14px;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{# {{ 'ads.btn.cancel'|trans }} #}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var dynatable = $('#reports-table').bind('dynatable:init', function (e, dynatable) {
+  var hash = window.location.hash.substring(1);
+  if (hash != "") {
+    $('.dynatable-filter').removeClass('active');
+    $('.dynatable-filter.filter-'+hash).addClass('active');
+    dynatable.queries.add('filter', hash);
+  } else {
+    dynatable.queries.add('filter', 'all');
+  }
+}).dynatable({
+  inputs: {
+    paginationClass: 'pagination',
+    paginationActiveClass: 'current',
+    paginationDisabledClass: 'unavailable',
+    paginationPrev: '&laquo;',
+    paginationNext: '&raquo;',
+    pageText: '{{ 'ads.table.table_messages.page'|trans }}',
+    perPageText: '{{ 'ads.table.table_messages.perPageText'|trans }}',
+    pageText: '{{ 'ads.table.table_messages.pageText'|trans }}',
+    recordCountPageBoundTemplate: '{{ 'ads.table.table_messages.recordCountPageBoundTemplate'|trans }}',
+    recordCountPageUnboundedTemplate: '{{ 'ads.table.table_messages.recordCountPageUnboundedTemplate'|trans }}',
+    recordCountTotalTemplate: '{{ 'ads.table.table_messages.recordCountTotalTemplate'|trans }}',
+    recordCountFilteredTemplate: '{{ 'ads.table.table_messages.recordCountFilteredTemplate'|trans }}',
+    recordCountText: '{{ 'ads.table.table_messages.recordCountText'|trans }}',
+    recordCountTextTemplate: '{{ 'ads.table.table_messages.recordCountTextTemplate'|trans }}',
+    recordCountTemplate: '{{ 'ads.table.table_messages.recordCountTemplate'|trans }}',
+    processingText: '{{ 'ads.table.table_messages.processingText'|trans }}'
+  },
+  dataset: {
+    ajax: true,
+    ajaxUrl: Routing.generate('ahs_advertsplugin_admin_loadads'),
+    ajaxOnLoad: false,
+    records: [],
+    perPageDefault: 10,
+    perPageOptions: [10,20,50,100],
+  },
+  features: {
+    paginate: true,
+  },
+  writers: {
+    _cellWriter: function (column, record) {
+      if (column.id == 'name') {
+        column.attributeWriter = function(record) {
+          var thumb = record.thumbnailUrl;
+          var html = "";
+          if (thumb) {
+            html += "<center><img src="+record.thumbnailUrl+"></center><br>";
+          }
+          html += "<span>"+record.name+"</span>";
+          return html;
+        }
+      }
+      if (column.label == '{{ 'ads.table.actions.actions'|trans }}') {
+        column.attributeWriter = function(record) {
+          var html = "";
+          for (index = 0; index < record['links'].length; ++index) {
+            var el = record['links'][index];
+            {% if hasPermission('plugin_classifieds_edit') %}
+            if (el['rel'] == 'edit') {
+              html += "<a class='btn btn-xs btn-default action-btn' href="+Routing.generate('ahs_advertsplugin_admin_editad', {id: record.id })+"><span class='glyphicon glyphicon-edit'>{{ 'ads.table.actions.edit'|trans }}</span></a>";
+            }
+            {% endif %}
+            {% if hasPermission('plugin_classifieds_delete') %}
+            if (el['rel'] == 'delete') {
+              html += "<a class='btn btn-xs btn-danger action-btn js-remove-ad' data-ad-id='"+record.id+"'><span class='glyphicon glyphicon-trash'>{{ 'ads.table.actions.remove'|trans }}</span></a>";
+            }
+            {% endif %}
+            {% if hasPermission('plugin_classifieds_activate') %}
+            if (el['rel'] == 'activate' && record['status'] == false) {
+              html += "<a class='btn btn-xs btn-success action-btn js-activate' href="+el['href']+"><span class='glyphicon glyphicon-thumbs-up'></span>{{ 'ads.table.actions.activate'|trans }}</a>";
+            }
+            {% endif %}
+            {% if hasPermission('plugin_classifieds_deactivate') %}
+            if (el['rel'] == 'deactivate' && record['status'] == true) {
+              html += "<a class='btn btn-xs btn-warning action-btn js-deactivate' href="+el['href']+"><span class='glyphicon glyphicon-thumbs-down'></span>{{ 'ads.table.actions.deactivate'|trans }}</a>";
+            }
+            {% endif %}
+          }
+          return html;
+        }
+      }
+      if (column.id == 'userId') {
+        column.attributeWriter = function(record) {
+          return "<a href="+record.username.href+">"+record.username.username+"</a>";
+        }
+      }
+      if (column.id == 'description') {
+        column.attributeWriter = function(record) {
+          return '<button class="btn-xs btn-default description-btn" id="'+record.id+'">{{ 'ads.btn.showDescription'|trans }}</button>';
+        }
+      }
+      if (column.id == 'created_at') {
+        column.attributeWriter = function(record) {
+          return record.created.date;
+        }
+      }
+      if (column.id == 'validTo') {
+        column.attributeWriter = function(record) {
+          return record.valid_to.date;
+        }
+      }
+      var html = column.attributeWriter(record),
+      td = '<td';
+      if (column.hidden || column.textAlign) {
+        td += ' style="';
+                  // keep cells for hidden column headers hidden
+                  if (column.hidden) {
+                    td += 'display: none;';
+                  }
+                  // keep cells aligned as their column headers are aligned
+                  if (column.textAlign) {
+                    td += 'text-align: ' + column.textAlign + ';';
+                  }
+                  td += '"';
+                }
+                if (column.cssClass) {
+                  td += ' class="' + column.cssClass + '"';
+                }
+                return td + '>' + html + '</td>';
+              }
+            }
+          }).data('dynatable');
+$('.dynatable-filter').click(function(e){
+  $('.dynatable-filter').removeClass('active');
+  $(this).addClass('active');
+  dynatable.queries.add('filter', $(this).data('filter'));
+  dynatable.process();
+});
+$('.dynatable-ad-status').click(function(e){
+  var values = [];
+  $('.dynatable-ad-status').each(function(key, el){
+    if ($(el).is(':checked')) {
+      values.push($(el).val());
+    }
+  });
+  dynatable.queries.add('ad-status', values);
+  dynatable.process();
+});
+$('.dynatable-ad-type').click(function(e){
+  var values = [];
+  $('.dynatable-ad-type').each(function(key, el){
+    if ($(el).is(':checked')) {
+      values.push($(el).val());
+    }
+  });
+  dynatable.queries.add('ad-type', values);
+  dynatable.process();
+});
+$('.js-remove-ad').live('click', function(event){
+  event.preventDefault();
+  var that = $(this);
+  $('#deleteConfirmModal').modal({ show: true, keyboard: false }).one('click', '#delete-confirm', function (e) {
+    $.post(Routing.generate('ahs_advertsplugin_admin_deletead', {id: that.attr('data-ad-id') }))
+    .done(function(data) {
+      if (data.status) {
+        flashMessage('{{ 'ads.success.deleted'|trans }}');
+        dynatable.process();
+        return true;
+      }
+      flashMessage('{{ 'ads.error.cantdelete'|trans }}', 'error');
+    });
+  });
+});
+$('.js-activate').live('click', function(event){
+  event.preventDefault();
+  $.post($(this).attr('href'))
+  .done(function(data) {
+    if (data.status) {
+      flashMessage('{{ 'ads.success.activated'|trans }}');
+      dynatable.process();
+      return true;
+    }
+    flashMessage('{{ 'ads.error.cantactivate'|trans }}', 'error');
+  });
+});
+$('.js-deactivate').live('click', function(event){
+  event.preventDefault();
+  $.post($(this).attr('href'))
+  .done(function(data) {
+    if (data.status) {
+      flashMessage('{{ 'ads.success.deactivated'|trans }}');
+      dynatable.process();
+      return true;
+    }
+    flashMessage('{{ 'ads.error.cantdeactivate'|trans }}', 'error');
+  });
+});
+$('.description-btn').live('click', function(event){
+  event.preventDefault();
+  var id = $(this).attr('id');
+  $.post(Routing.generate('ahs_advertsplugin_admin_getdescription', {id: id }))
+  .done(function(data) {
+    if (data.status) {
+      $('#descriptionModal').find('.modal-body').html('');
+      $('#descriptionModal').find('.modal-body').append(data.description);
+      $('#descriptionModal').modal();
+    } else {
+      flashMessage("{{ 'ads.error.error'|trans }}", 'error');
+    }
+  });
+});
+</script>
 
 {% endblock %}

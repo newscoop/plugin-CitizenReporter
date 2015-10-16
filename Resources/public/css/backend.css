@@ -1,0 +1,18 @@
+.nav-pills{
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.glyphicon.accepted{
+  font-size:18px;
+  color:green;
+}
+
+.glyphicon.rejected{
+  font-size:18px;
+  color:red;
+}
+
+.actions .btn{
+  margin-bottom:5px;
+}
